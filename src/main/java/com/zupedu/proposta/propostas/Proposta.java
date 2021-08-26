@@ -13,7 +13,7 @@ public class Proposta {
     @Id
     private String id = UUID.randomUUID().toString().replace("-","");
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String cpfOuCnpj;
 
     @Column(nullable = false)
@@ -27,6 +27,9 @@ public class Proposta {
 
     @Column(nullable = false)
     private BigDecimal salario;
+
+    @Deprecated
+    private Proposta() {}
 
     public Proposta(String cpfOuCnpj, String email, String nome, String endereco, BigDecimal salario) {
         this.cpfOuCnpj = cpfOuCnpj;

@@ -1,4 +1,4 @@
-package com.zupedu.proposta.validacoes.anotacoes;
+package com.zupedu.proposta.validacoes;
 
 import org.hibernate.validator.constraints.CompositionType;
 import org.hibernate.validator.constraints.ConstraintComposition;

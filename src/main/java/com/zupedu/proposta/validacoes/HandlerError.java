@@ -4,7 +4,8 @@ import org.springframework.validation.FieldError;
 
 public class HandlerError {
 
-    private String campo, mensagem;
+    private final String campo;
+    private final String mensagem;
 
     public HandlerError(String campo, String mensagem) {
         this.campo = campo;

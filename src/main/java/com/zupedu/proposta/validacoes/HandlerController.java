@@ -13,14 +13,22 @@ import java.util.stream.Collectors;
 public class HandlerController {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> validacao(MethodArgumentNotValidException e, BindingResult result) {
-        if (result.hasErrors()) {
-            List<HandlerError> erros = result.getFieldErrors()
-                    .stream()
-                    .map(HandlerError::new)
-                    .collect(Collectors.toList());
-            return ResponseEntity.badRequest().body(erros);
-        } return null;
+    public ResponseEntity<?> exceptionHandler(MethodArgumentNotValidException e, BindingResult result) {
+        return getListResponseEntity(result);
+    }
+
+    @ExceptionHandler(ExceptionPersonalizada.class)
+    public ResponseEntity<?> handlerPersonalizado(ExceptionPersonalizada e) {
+        HandlerErrorMessage erroPersonalizado = new HandlerErrorMessage(e.getLocalizedMessage());
+        return ResponseEntity.status(e.getHttpStatus()).body(erroPersonalizado);
+    }
+
+    private ResponseEntity<?> getListResponseEntity(BindingResult result) {
+        List<HandlerError> errorHandlers = result.getFieldErrors()
+                .stream()
+                .map(HandlerError::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.badRequest().body(errorHandlers);
     }
 
 }

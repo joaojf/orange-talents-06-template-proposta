@@ -1,6 +1,8 @@
 package com.zupedu.proposta.propostas;
 
-import com.zupedu.proposta.validacoes.anotacoes.DocumentoValido;
+import com.zupedu.proposta.validacoes.ExceptionPersonalizada;
+import com.zupedu.proposta.validacoes.DocumentoValido;
+import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -27,8 +29,10 @@ public class PropostaRequest {
     @NotNull @PositiveOrZero
     private BigDecimal salario;
 
-    public Proposta converte() {
-        return new Proposta(this.cpfOuCnpj, this.email, this.nome, this.endereco, this.salario);
+    public Proposta converte(PropostaRepository propostaRepository) {
+        if (propostaRepository.existsByCpfOuCnpj(this.cpfOuCnpj)) {
+            throw new ExceptionPersonalizada("Já existe uma proposta cadastrada para esse CPF/CNPJ", HttpStatus.UNPROCESSABLE_ENTITY);
+        } return new Proposta(this.cpfOuCnpj, this.email, this.nome, this.endereco, this.salario);
     }
 
     public String getCpfOuCnpj() {
